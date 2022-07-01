@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" href="../style.css" type="text/css" media="all"/>
+  <title>utools(1)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">utools(1)</td>
+    <td class="head-vol">General Commands Manual</td>
+    <td class="head-rtitle">utools(1)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<code class="Nm">utools</code> &#x2014;
+<div class="Nd">user tools</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<table class="Nm">
+  <tr>
+    <td><code class="Nm">utools</code></td>
+    <td>is a collection of tools in one utility.</td>
+  </tr>
+</table>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+todo
+</section>
+<section class="Sh">
+<h1 class="Sh" id="AUTHORs"><a class="permalink" href="#AUTHORs">AUTHORs</a></h1>
+<code class="Nm">utools</code> was written by <span class="An">moatx</span>
+<p class="Pp"></p>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">June 24, 2022</td>
+    <td class="foot-os">NetBSD 9.2</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,20 @@
+#!/bin/sh
+DATE="$(date +"%Y-%m-%d")"
+
+#sfeed_update
+# save histroy 
+#sfeed_plain "$HOME"/.sfeed/feeds/* >> "$HOME"/.feedhistory
+
+# main
+while :; do
+URL="$(sfeed_plain "$HOME"/.sfeed/feeds/* | grep "$DATE" | fzf | awk '{ print $NF }')"
+
+[ -z "$URL" ] && exit
+
+case $URL in 
+	*"yewtu"*) mpv "$URL";;
+	*) w3m "$URL";;
+esac
+
+
+done
