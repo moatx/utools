@@ -4,10 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <util.h>
 
 /*
- * openbsd memory display util
+ * openbsd and netbsd (wip) memory display util
  */
 
 static struct uvmexp uvm;
@@ -55,7 +54,7 @@ main(int argc, char **argv)
     */
 
     /*
-     * XXX If argc is 2 their wont be anything printed
+     * XXX If argc is 2 then there wont be anything printed
      */
 
 	if (argc == 1) {
@@ -96,16 +95,6 @@ main(int argc, char **argv)
 
 	printf("\n");
 	return 0;
-}
-
-void
-fprint(u_int64_t size)
-{
-	char *human_size;
-	human_size = malloc(FMT_SCALED_STRSIZE);
-	fmt_scaled(size, human_size);
-	printf("%s ", human_size);
-	free(human_size);
 }
 
 static void
