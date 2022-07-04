@@ -6,4 +6,4 @@ utools is a collection of user tools that help the user get information out of a
 utools currently only supports NetBSD, but support for linux is planned.
 
 the tools that are included in utools are the following:
-	power		prints the battery percentage and whether or not its charging
+	power.c		prints the battery percentage and whether or not its charging
