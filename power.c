@@ -1,6 +1,6 @@
 #include <stdio.h>
-     #include <stdlib.h>
-     #include <locale.h>
+#include <stdlib.h>
+#include <locale.h>
 
 #include <fcntl.h>
 #include <paths.h>
@@ -11,14 +11,13 @@
 intmax_t isConnected(void);
 double getPercent(void);
 
-static const char* version = "0.0.0";
+static const char *version = "0.0.0";
 
-static void 
+static void
 usage(void)
 {
 	(void)fprintf(stderr, "Usage: %s [-cvh]\n", getprogname());
 	exit(EXIT_FAILURE);
-	/* NOTREACHED */
 }
 
 int
@@ -26,11 +25,11 @@ main(int argc, char **argv)
 {
 	int ch;
 	int cflag = 0, pflag = 0;
-        setprogname(argv[0]);
-        (void)setlocale(LC_ALL, "");
+	setprogname(argv[0]);
+	(void)setlocale(LC_ALL, "");
 
-        while ((ch = getopt(argc, argv, "vhcp")) != -1){
-                switch (ch) {
+	while ((ch = getopt(argc, argv, "vhcp")) != -1) {
+		switch (ch) {
 		case 'p':
 			pflag = 1;
 			break;
@@ -40,30 +39,28 @@ main(int argc, char **argv)
 		case 'h':
 			(void)fprintf(stderr, "Usage: %s [-cvh]\n", getprogname());
 			exit(0);
-                case 'v':
+		case 'v':
 			(void)fprintf(stderr, "%s\n", version);
 			exit(0);
-                default:
-                case '?':
+		default:
+		case '?':
 			usage();
-                }
+		}
 	}
 	argc -= optind;
 
 	if (argc != 0)
 		usage();
 
-	if(cflag){
+	if (cflag) {
 		printf("%li\n", isConnected());
 	}
-
-	if(pflag){
-		printf("%f\n", getPercent());
+	if (pflag) {
+		printf("%.2f%%\n", getPercent());
 	}
-
-	
 }
-intmax_t isConnected(void){
+intmax_t
+isConnected(void){
 	prop_dictionary_t dict, fields;
 	prop_object_t device, curValue, descField;
 	prop_object_iterator_t devIter, fieldsIter;
@@ -111,7 +108,9 @@ error:
 	return -1;
 }
 
-double getPercent(void){
+double
+getPercent(void)
+{
 	double percent = 0;
 	prop_dictionary_t dict, fields, props;
 	prop_object_t device, class, curValue, maxValue, descField;
