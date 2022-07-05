@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
-
 #include <fcntl.h>
 #include <paths.h>
 #include <unistd.h>
@@ -11,53 +10,46 @@
 intmax_t isConnected(void);
 double getPercent(void);
 
-static const char *version = "0.0.0";
+static const char *version = "1.0.0";
 
 static void
-usage(void)
+usage(int v)
 {
-	(void)fprintf(stderr, "Usage: %s [-cvh]\n", getprogname());
-	exit(EXIT_FAILURE);
+	(void)fprintf(stderr, "Usage: %s [-cvph]\n", getprogname());
+	exit(v);
 }
+
 
 int
 main(int argc, char **argv)
 {
 	int ch;
-	int cflag = 0, pflag = 0;
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
+
+	if (argc == 1)
+		usage(EXIT_SUCCESS);
 
 	while ((ch = getopt(argc, argv, "vhcp")) != -1) {
 		switch (ch) {
 		case 'p':
-			pflag = 1;
+			printf("%.2f%%\n", getPercent());
 			break;
 		case 'c':
-			cflag = 1;
+			printf("%li\n", isConnected());
 			break;
 		case 'h':
-			(void)fprintf(stderr, "Usage: %s [-cvh]\n", getprogname());
-			exit(0);
+			usage(EXIT_SUCCESS);
+			break;
 		case 'v':
 			(void)fprintf(stderr, "%s\n", version);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		default:
 		case '?':
-			usage();
+			usage(EXIT_FAILURE);
 		}
 	}
-	argc -= optind;
-
-	if (argc != 0)
-		usage();
-
-	if (cflag) {
-		printf("%li\n", isConnected());
-	}
-	if (pflag) {
-		printf("%.2f%%\n", getPercent());
-	}
+	return EXIT_SUCCESS;
 }
 intmax_t
 isConnected(void){
@@ -105,7 +97,7 @@ isConnected(void){
 error:
 	if (fd != -1)
 		close(fd);
-	return -1;
+	exit(EXIT_FAILURE);
 }
 
 double
@@ -171,10 +163,11 @@ getPercent(void)
 			}
 		}
 
-		if (isBattery && isPresent) {
-			totalCharge += curCharge;
-			totalCapacity += maxCharge;
-		}
+		if (isBattery && isPresent == 0)
+			goto error;
+
+		totalCharge += curCharge;
+		totalCapacity += maxCharge;
 	}
 	percent = ((double)totalCharge / (double)totalCapacity) * 100.0;
 	return percent;
@@ -182,5 +175,5 @@ getPercent(void)
 error:
 	if (fd != -1)
 		close(fd);
-	return -1;
+	exit(EXIT_FAILURE);
 }
