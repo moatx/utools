@@ -1,3 +1,23 @@
+/*
+ * utools - power.c
+ * (C) 2022 moatx
+ * Released under the GNU GPLv2+, see the COPYING file
+ * in the source distribution for its full text.
+*/
+
+/*
+ * htop - netbsd/Platform.c
+ * (C) 2014 Hisham H. Muhammad
+ * (C) 2015 Michael McConville
+ * (C) 2021 Santhosh Raju
+ * (C) 2021 Nia Alarie
+ * (C) 2021 htop dev team
+ * Released under the GNU GPLv2+, see the COPYING file
+ * in the source distribution for its full text.
+*/
+
+/* The NetBSD specific functions were copied from htop's netbsd/Platform.c, and was modified to do what I wanted it to do */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
