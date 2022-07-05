@@ -7,3 +7,8 @@ utools currently only supports NetBSD, but support for linux is planned.
 
 the tools that are included in utools are the following:
 	power.c		prints the battery percentage and whether or not its charging
+
+
+LICENSE
+-------
+GNU General Public License, version 2 (GPL-2.0) or, at your option, any later version.
