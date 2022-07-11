@@ -28,7 +28,7 @@ static void daemonize();
 
 static const char *version = "1.0.1";
 
-char* USAGE = "[-cvph]";
+char *USAGE = "[-cvph]";
 
 /*
 static void __dead
@@ -104,7 +104,7 @@ main(int argc, char **argv)
 		switch (ch) {
 		case 'p':
 			printf("%.2f%%\n", getPercent());
-			/*rputs(getPercent());*/
+			/* rputs(getPercent()); */
 			break;
 		case 'c':
 			printf("is the power cable connected?: %s\n", (isConnected()) ? "yes" : "no");
@@ -124,4 +124,3 @@ main(int argc, char **argv)
 	}
 	return EXIT_SUCCESS;
 }
-

@@ -7,7 +7,9 @@ utools currently only supports NetBSD, but support for linux is planned.
 
 the tools that are included in utools are the following:
 	power.c		prints the battery percentage and whether or not its charging
+	mem.c		prints free, used, and total memory for the system
 
 LICENSE
 -------
-GNU General Public License, version 2 (GPL-2.0) or, at your option, any later version.
+power.c is licensed under the GNU General Public License, version 2 (GPL-2.0), and you can find the license in the GPL2 file.
+The rest of the tools include the license in their source code.
