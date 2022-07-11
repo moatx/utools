@@ -1,15 +1,15 @@
 utools - a collection of user tools
 ===================================
 
-utools is a collection of user tools that help the user get information out of a system.
+utools is a collection of user tools that aid in retrieving data from a system. 
 
 utools currently only supports NetBSD, but support for linux is planned.
 
-the tools that are included in utools are the following:
+The following are the tools that are included in utools: 
 	power.c		prints the battery percentage and whether or not its charging
 	mem.c		prints free, used, and total memory for the system
 
 LICENSE
 -------
-power.c is licensed under the GNU General Public License, version 2 (GPL-2.0), and you can find the license in the GPL2 file.
-The rest of the tools include the license in their source code.
+The GNU General Public License, version 2 (GPL-2.0) governs the use of power.c and power_netbsd.c. You may find the license in the GPL2 file. 
+The license is part of the source code for the other utils.
