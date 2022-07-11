@@ -1,2 +1,4 @@
-support linux in power.c
-rewrite mem.c
+add linux support
+make top
+make rprintf with va_args
+

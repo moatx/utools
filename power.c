@@ -5,39 +5,88 @@
  * in the source distribution for its full text.
 */
 
-/*
- * htop - netbsd/Platform.c
- * (C) 2014 Hisham H. Muhammad
- * (C) 2015 Michael McConville
- * (C) 2021 Santhosh Raju
- * (C) 2021 Nia Alarie
- * (C) 2021 htop dev team
- * Released under the GNU GPLv2+, see the COPYING file
- * in the source distribution for its full text.
-*/
-
-/* The NetBSD specific functions were copied from htop's netbsd/Platform.c, and was modified to do what I wanted it to do */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <locale.h>
 #include <fcntl.h>
 #include <paths.h>
 #include <unistd.h>
 #include <prop/proplib.h>
 #include <sys/envsys.h>
+#include <signal.h>
+#include <sys/stat.h>
+#include "power.h"
+#include "utools.h"
 
-intmax_t isConnected(void);
-double getPercent(void);
 
-static const char *version = "1.0.0";
+/* daemon flag for low power capacity notifier is a w.i.p */
+/*
+static void daemonize();
+*/
 
-static void
+static const char *version = "1.0.1";
+
+char* USAGE = "[-cvph]";
+
+/*
+static void __dead
 usage(int v)
 {
-	(void)fprintf(stderr, "Usage: %s [-cvph]\n", getprogname());
+	(void)fprintf(stderr, "usage: %s [-cvph]\n", getprogname());
 	exit(v);
 }
+*/
+
+static void
+daemonize(void)
+{
+	/* int fd; */
+
+
+	puts("initializing daemon...");
+	switch (fork()) {
+	case -1:
+		exit(EXIT_FAILURE);
+	case 0:
+		break;
+	default:
+		_exit(0);
+	}
+
+	/* On success: The child process becomes session leader */
+	if (setsid() < 0) {
+		exit(EXIT_FAILURE);
+	}
+
+	/* Ignore signal sent from child to parent process */
+	signal(SIGCHLD, SIG_IGN);
+
+	/* Set new file permissions */
+	umask(0);
+
+	/* Change the working directory to the root directory */
+	/* or another appropriated directory */
+	chdir("/");
+/*
+        if ((fd = open(_PATH_DEVNULL, O_RDWR, 0)) != -1) {
+                (void)dup2(fd, STDIN_FILENO);
+                (void)dup2(fd, STDOUT_FILENO);
+                (void)dup2(fd, STDERR_FILENO);
+                if (fd > STDERR_FILENO)
+                        (void)close(fd);
+        }
+	*/
+
+
+	for (;;) {
+		puts("AAA");
+		sleep(2);
+	}
+
+}
+
 
 
 int
@@ -45,22 +94,26 @@ main(int argc, char **argv)
 {
 	int ch;
 	setprogname(argv[0]);
-	(void)setlocale(LC_ALL, "");
 
-	if (argc == 1)
-		usage(EXIT_SUCCESS);
-
-	while ((ch = getopt(argc, argv, "vhcp")) != -1) {
+	if (argc == 1) {
+		printf("%.2f%%\n", getPercent());
+		/* printf("%li\n", isConnected()); */
+		/* usage(EXIT_SUCCESS); */
+	}
+	while ((ch = getopt(argc, argv, "pcdhv")) != -1) {
 		switch (ch) {
 		case 'p':
 			printf("%.2f%%\n", getPercent());
+			/*rputs(getPercent());*/
 			break;
 		case 'c':
-			printf("%li\n", isConnected());
+			printf("is the power cable connected?: %s\n", (isConnected()) ? "yes" : "no");
+			break;
+		case 'd':
+			daemonize();
 			break;
 		case 'h':
 			usage(EXIT_SUCCESS);
-			break;
 		case 'v':
 			(void)fprintf(stderr, "%s\n", version);
 			exit(EXIT_SUCCESS);
@@ -71,129 +124,4 @@ main(int argc, char **argv)
 	}
 	return EXIT_SUCCESS;
 }
-intmax_t
-isConnected(void){
-	prop_dictionary_t dict, fields;
-	prop_object_t device, curValue, descField;
-	prop_object_iterator_t devIter, fieldsIter;
 
-	intmax_t isConnected = 0;
-
-	int fd = open(_PATH_SYSMON, O_RDONLY);
-	if (fd == -1)
-		goto error;
-
-
-
-	if (prop_dictionary_recv_ioctl(fd, ENVSYS_GETDICTIONARY, &dict) != 0)
-		goto error;
-
-	devIter = prop_dictionary_iterator(dict);
-	if (devIter == NULL)
-		goto error;
-
-	while ((device = prop_object_iterator_next(devIter)) != NULL) {
-		prop_object_t fieldsArray = prop_dictionary_get_keysym(dict, device);
-		if (fieldsArray == NULL)
-			goto error;
-
-		fieldsIter = prop_array_iterator(fieldsArray);
-		if (fieldsIter == NULL)
-			goto error;
-
-		while ((fields = prop_object_iterator_next(fieldsIter)) != NULL) {
-			curValue = prop_dictionary_get(fields, "cur-value");
-			descField = prop_dictionary_get(fields, "description");
-
-			if (descField == NULL || curValue == NULL)
-				continue;
-			if (prop_string_equals_cstring(descField, "connected")) {
-				isConnected = prop_number_integer_value(curValue);
-			}
-		}
-	}
-	return isConnected;
-
-error:
-	if (fd != -1)
-		close(fd);
-	exit(EXIT_FAILURE);
-}
-
-double
-getPercent(void)
-{
-	double percent = 0;
-	prop_dictionary_t dict, fields, props;
-	prop_object_t device, class, curValue, maxValue, descField;
-	prop_object_iterator_t devIter, fieldsIter;
-
-	intmax_t totalCharge = 0;
-	intmax_t totalCapacity = 0;
-	int isBattery = 0;
-	intmax_t isPresent = 1;
-	intmax_t curCharge = 0;
-	intmax_t maxCharge = 0;
-
-	int fd = open(_PATH_SYSMON, O_RDONLY);
-	if (fd == -1)
-		goto error;
-
-
-
-	if (prop_dictionary_recv_ioctl(fd, ENVSYS_GETDICTIONARY, &dict) != 0)
-		goto error;
-
-	devIter = prop_dictionary_iterator(dict);
-	if (devIter == NULL)
-		goto error;
-
-	while ((device = prop_object_iterator_next(devIter)) != NULL) {
-		prop_object_t fieldsArray = prop_dictionary_get_keysym(dict, device);
-		if (fieldsArray == NULL)
-			goto error;
-
-		fieldsIter = prop_array_iterator(fieldsArray);
-		if (fieldsIter == NULL)
-			goto error;
-
-		while ((fields = prop_object_iterator_next(fieldsIter)) != NULL) {
-			props = prop_dictionary_get(fields, "device-properties");
-			if (props != NULL) {
-				class = prop_dictionary_get(props, "device-class");
-
-				if (prop_string_equals_cstring(class, "battery")) {
-					isBattery = 1;
-				}
-				continue;
-			}
-			curValue = prop_dictionary_get(fields, "cur-value");
-			maxValue = prop_dictionary_get(fields, "max-value");
-			descField = prop_dictionary_get(fields, "description");
-
-			if (descField == NULL || curValue == NULL)
-				continue;
-			if (prop_string_equals_cstring(descField, "present")) {
-				isPresent = prop_number_integer_value(curValue);
-			} else if (prop_string_equals_cstring(descField, "charge")) {
-				if (maxValue == NULL)
-					continue;
-				curCharge = prop_number_integer_value(curValue);
-				maxCharge = prop_number_integer_value(maxValue);
-			}
-		}
-
-		if (isBattery && isPresent == 0)
-			goto error;
-
-		totalCharge += curCharge;
-		totalCapacity += maxCharge;
-	}
-	percent = ((double)totalCharge / (double)totalCapacity) * 100.0;
-	return percent;
-
-error:
-	if (fd != -1)
-		close(fd);
-	exit(EXIT_FAILURE);
-}
