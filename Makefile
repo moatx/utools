@@ -1,6 +1,8 @@
 CC ?= gcc
 CFLAGS += -Wall -Werror -Wextra -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith  -Wsystem-headers     -Wa,--fatal-warnings  -Wreturn-type -Wswitch -Wshadow -Wcast-qual -Wwrite-strings -Wextra -Wno-sign-compare -Wold-style-definition -Wconversion -Wsign-compare -Wformat=2   -Wno-discarded-qualifiers -Wno-unused-function
 
+OS ?= netbsd
+
 all: mem power
 
 mem:
