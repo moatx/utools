@@ -50,4 +50,5 @@ main(int argc, char **argv)
 			usage(EXIT_FAILURE);
 		}
 	}
+	return 0;
 }
