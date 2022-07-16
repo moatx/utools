@@ -4,19 +4,19 @@
 double
 getfree(void)
 {
-	return;
+	return 1.1;
 }
 
 /* get used memory */
 double
 getused(void)
 {
-	return;
+	return 2.2;
 }
 
 /* get total physical memory */
 double
 getphy(void)
 {
-	return;
+	return 3.3;
 }
