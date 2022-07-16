@@ -35,7 +35,7 @@
 
 extern char *USAGE;
 
-static void __dead
+static void /*__dead */
 usage(int v)
 {
 	(void)fprintf(stderr, "usage: %s %s\n", getprogname(), USAGE);
@@ -53,7 +53,9 @@ rputs(double size)
 	}
 	printf("%.*f %s\n", i, size, units[i]);
 }
-#ifndef __BSD__
+/*#ifndef __BSD__*/
 #define __BSD__ __NetBSD__ || __OpenBSD__ || __FreeBSD__
+/*
 #endif
+*/
 #endif
