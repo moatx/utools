@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/param.h>
 
 extern char *USAGE;
 
@@ -52,4 +53,7 @@ rputs(double size)
 	}
 	printf("%.*f %s\n", i, size, units[i]);
 }
+#ifndef __BSD__
+#define __BSD__ __NetBSD__ || __OpenBSD__ || __FreeBSD__
+#endif
 #endif
