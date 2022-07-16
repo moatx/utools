@@ -54,7 +54,9 @@ rputs(double size)
 	printf("%.*f %s\n", i, size, units[i]);
 }
 /*#ifndef __BSD__*/
+/*
 #define _BSD_ __NetBSD__ || __OpenBSD__ || __FreeBSD__
+*/
 /*
 #endif
 */

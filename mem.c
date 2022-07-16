@@ -32,7 +32,7 @@ int
 main(int argc, char **argv)
 {
 	int ch;
-	#ifdef _BSD_
+	#ifdef __NetBSD__
 	puts("BSD");
 	setprogname(argv[0]);
 	#endif
