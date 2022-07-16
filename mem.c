@@ -32,7 +32,8 @@ int
 main(int argc, char **argv)
 {
 	int ch;
-	#ifdef __BSD__
+	#ifdef _BSD_
+	puts("BSD");
 	setprogname(argv[0]);
 	#endif
 	if (argc == 1)
