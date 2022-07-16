@@ -3,13 +3,14 @@ CFLAGS += -Wall -Werror -Wextra -Wstrict-prototypes -Wmissing-prototypes -Wpoint
 
 OS != uname | tr '[:upper:]' '[:lower:]'
 
-all: mem power
+all: mem 
+#power
 
 mem:
 	$(CC) $(CFLAGS) mem.c mem_$(OS).c -o mem 
 
-power:
-	$(CC) $(CFLAGS) power.c power_$(OS).c -o power -lprop
+#power:
+#	$(CC) $(CFLAGS) power.c power_$(OS).c -o power -lprop
 
 clean:
 	@rm -f mem power
