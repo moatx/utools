@@ -35,7 +35,10 @@
 
 extern char *USAGE;
 
-static void /*__dead */
+static void 
+#ifdef __NetBSD__ 
+__dead 
+#endif
 usage(int v)
 {
 	(void)fprintf(stderr, "usage: %s %s\n", getprogname(), USAGE);

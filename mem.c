@@ -32,10 +32,12 @@ int
 main(int argc, char **argv)
 {
 	int ch;
+	/*
 	#ifdef __NetBSD__
 	puts("BSD");
 	setprogname(argv[0]);
 	#endif
+	*/
 	if (argc == 1)
 		usage(EXIT_SUCCESS);
 	while ((ch = getopt(argc, argv, "utf")) != -1) {

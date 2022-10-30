@@ -3,18 +3,22 @@ CFLAGS += -Wall -Werror -Wextra -Wstrict-prototypes -Wmissing-prototypes -Wpoint
 
 OS != uname | tr '[:upper:]' '[:lower:]'
 
-all: mem 
+all: mem power
 #power
 
 mem:
 	$(CC) $(CFLAGS) mem.c mem_$(OS).c -o mem 
 
-#power:
-#	$(CC) $(CFLAGS) power.c power_$(OS).c -o power -lprop
+power:
+	$(CC) $(CFLAGS) power.c power_$(OS).c -o power -lprop
+
+install:
+	cp mem /usr/local/bin/mem
+	cp power /usr/local/bin/power
 
 clean:
 	@rm -f mem power
 
 
 
-.PHONY: all clean
+.PHONY: all install clean

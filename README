@@ -12,7 +12,9 @@ The following are the tools that are included in utools:
 BUILDING
 --------
 
-To build, you must specify the operating system.
+To build, simply run make.
+
+If that didn't work, then specify the os.
 
 As an example: 
 	make OS=netbsd

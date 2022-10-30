@@ -93,7 +93,7 @@ int
 main(int argc, char **argv)
 {
 	int ch;
-#ifdef __BSD__
+#ifdef __NetBSD__
 	setprogname(argv[0]);
 #endif
 
@@ -107,7 +107,10 @@ main(int argc, char **argv)
 			/* rputs(getPercent()); */
 			break;
 		case 'c':
+			/*
 			printf("is the power cable connected?: %s\n", (is_connected()) ? "yes" : "no");
+			*/
+			printf("%s\n", (is_connected()) ? "yes" : "no");
 			break;
 		case 'd':
 			daemonize();
